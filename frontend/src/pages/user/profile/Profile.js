@@ -18,18 +18,13 @@ class Profile extends Component {
                                 <Avatar
                                     className="user-avatar-circle"
                                     style={{ backgroundColor: getAvatarColor(sessionStore.userInfo.name) }}
-                                    data-qa="avatar"
                                 >
                                     {sessionStore.userInfo.name[0].toUpperCase()}
                                 </Avatar>
                             </div>
                             <div className="user-summary">
-                                <div className="full-name" data-qa="full-name">
-                                    {sessionStore.userInfo.name}
-                                </div>
-                                <div className="username" data-qa="username">
-                                    @{sessionStore.userInfo.username}
-                                </div>
+                                <div className="full-name">{sessionStore.userInfo.name}</div>
+                                <div className="username">@{sessionStore.userInfo.username}</div>
                             </div>
                         </div>
                     </div>

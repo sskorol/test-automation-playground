@@ -25,6 +25,7 @@ import CustomOHLCTooltip from './CustomOHLCTooltip';
 import { CHART_UPDATE_INTERVAL, AUTOUPDATE_CHART } from '../../../constants';
 
 import randomFloat from 'random-float';
+
 const numberFormat = format('.2f');
 
 class CandleStickChartWithMA extends Component {
@@ -113,21 +114,21 @@ class CandleStickChartWithMA extends Component {
                     ]}
                     padding={{ top: 10, bottom: 20 }}
                 >
-                    <XAxis axisAt="bottom" orient="bottom" />
-                    <YAxis axisAt="right" orient="right" ticks={5} />
-                    <MouseCoordinateY at="right" orient="right" displayFormat={format('.2f')} />
-                    <CandlestickSeries />
-                    <LineSeries yAccessor={sma20.accessor()} stroke={sma20.stroke()} />
-                    <LineSeries yAccessor={wma20.accessor()} stroke={wma20.stroke()} />
-                    <LineSeries yAccessor={tma20.accessor()} stroke={tma20.stroke()} />
-                    <LineSeries yAccessor={ema20.accessor()} stroke={ema20.stroke()} />
-                    <LineSeries yAccessor={ema50.accessor()} stroke={ema50.stroke()} />
-                    <CurrentCoordinate yAccessor={sma20.accessor()} fill={sma20.stroke()} />
-                    <CurrentCoordinate yAccessor={wma20.accessor()} fill={wma20.stroke()} />
-                    <CurrentCoordinate yAccessor={tma20.accessor()} fill={tma20.stroke()} />
-                    <CurrentCoordinate yAccessor={ema20.accessor()} fill={ema20.stroke()} />
-                    <CurrentCoordinate yAccessor={ema50.accessor()} fill={ema50.stroke()} />
-                    <CustomOHLCTooltip origin={[-40, 0]} />
+                    <XAxis axisAt="bottom" orient="bottom"/>
+                    <YAxis axisAt="right" orient="right" ticks={5}/>
+                    <MouseCoordinateY at="right" orient="right" displayFormat={format('.2f')}/>
+                    <CandlestickSeries/>
+                    <LineSeries yAccessor={sma20.accessor()} stroke={sma20.stroke()}/>
+                    <LineSeries yAccessor={wma20.accessor()} stroke={wma20.stroke()}/>
+                    <LineSeries yAccessor={tma20.accessor()} stroke={tma20.stroke()}/>
+                    <LineSeries yAccessor={ema20.accessor()} stroke={ema20.stroke()}/>
+                    <LineSeries yAccessor={ema50.accessor()} stroke={ema50.stroke()}/>
+                    <CurrentCoordinate yAccessor={sma20.accessor()} fill={sma20.stroke()}/>
+                    <CurrentCoordinate yAccessor={wma20.accessor()} fill={wma20.stroke()}/>
+                    <CurrentCoordinate yAccessor={tma20.accessor()} fill={tma20.stroke()}/>
+                    <CurrentCoordinate yAccessor={ema20.accessor()} fill={ema20.stroke()}/>
+                    <CurrentCoordinate yAccessor={ema50.accessor()} fill={ema50.stroke()}/>
+                    <CustomOHLCTooltip origin={[-40, 0]}/>
                     <MovingAverageTooltip
                         // eslint-disable-next-line no-console
                         onClick={e => console.log(e)}
@@ -189,19 +190,19 @@ class CandleStickChartWithMA extends Component {
                     height={150}
                     origin={(w, h) => [0, h - 150]}
                 >
-                    <YAxis axisAt="left" orient="left" ticks={5} tickFormat={format('.2s')} />
-                    <MouseCoordinateX at="bottom" orient="bottom" displayFormat={timeFormat('%Y-%m-%d')} />
-                    <MouseCoordinateY at="left" orient="left" displayFormat={format('.4s')} />
-                    <BarSeries yAccessor={d => d.volume} fill={d => (d.close > d.open ? '#6BA583' : 'red')} />
+                    <YAxis axisAt="left" orient="left" ticks={5} tickFormat={format('.2s')}/>
+                    <MouseCoordinateX at="bottom" orient="bottom" displayFormat={timeFormat('%Y-%m-%d')}/>
+                    <MouseCoordinateY at="left" orient="left" displayFormat={format('.4s')}/>
+                    <BarSeries yAccessor={d => d.volume} fill={d => (d.close > d.open ? '#6BA583' : 'red')}/>
                     <AreaSeries
                         yAccessor={smaVolume50.accessor()}
                         stroke={smaVolume50.stroke()}
                         fill={smaVolume50.fill()}
                     />
-                    <CurrentCoordinate yAccessor={smaVolume50.accessor()} fill={smaVolume50.stroke()} />
-                    <CurrentCoordinate yAccessor={d => d.volume} fill="#9B0A47" />
+                    <CurrentCoordinate yAccessor={smaVolume50.accessor()} fill={smaVolume50.stroke()}/>
+                    <CurrentCoordinate yAccessor={d => d.volume} fill="#9B0A47"/>
                 </Chart>
-                <CrossHairCursor />
+                <CrossHairCursor/>
             </ChartCanvas>
         );
     }
@@ -260,7 +261,7 @@ class ChartComponent extends Component {
 
     render() {
         return this.data ? (
-            <TypeChooser>{type => <CandleStickChartWithMA type={type} data={toJS(this.data)} />}</TypeChooser>
+            <TypeChooser>{type => <CandleStickChartWithMA type={type} data={toJS(this.data)}/>}</TypeChooser>
         ) : null;
     }
 }

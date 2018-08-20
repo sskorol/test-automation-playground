@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Signup.css';
 import { Link } from 'react-router-dom';
-import { Form, Input, Button, notification } from 'antd';
+import { Form, Input, Button, DatePicker, notification } from 'antd';
 import { observer, inject } from 'mobx-react';
 import { reaction } from 'mobx';
 import { validateName, validateUsername, validateEmail, validatePassword } from '../../../util/ValidationUtils';
@@ -13,6 +13,11 @@ const FormItem = Form.Item;
 @inject('routingStore', 'signupStore')
 @observer
 class Signup extends Component {
+    onChange(date, dateString) {
+        // eslint-disable-next-line no-console
+        console.log(date, dateString);
+    }
+
     handleInputChange = (event, validationFun) => {
         const target = event.target;
         const inputName = target.name;
@@ -80,7 +85,6 @@ class Signup extends Component {
                             <Input
                                 size="large"
                                 name="name"
-                                data-qa="full-name"
                                 autoComplete="off"
                                 placeholder="Type full name"
                                 value={signupStore.name.value}
@@ -96,7 +100,6 @@ class Signup extends Component {
                             <Input
                                 size="large"
                                 name="username"
-                                data-qa="username"
                                 autoComplete="off"
                                 placeholder="Type unique username"
                                 value={signupStore.username.value}
@@ -113,7 +116,6 @@ class Signup extends Component {
                             <Input
                                 size="large"
                                 name="email"
-                                data-qa="email"
                                 type="email"
                                 autoComplete="off"
                                 placeholder="Type unique email"
@@ -130,7 +132,6 @@ class Signup extends Component {
                             <Input
                                 size="large"
                                 name="password"
-                                data-qa="password"
                                 type="password"
                                 autoComplete="off"
                                 placeholder="Type password"
@@ -138,19 +139,21 @@ class Signup extends Component {
                                 onChange={event => this.handleInputChange(event, validatePassword)}
                             />
                         </FormItem>
+                        <FormItem label="Birth date">
+                            <DatePicker onChange={this.onChange()}/>
+                        </FormItem>
                         <FormItem>
                             <Button
                                 type="primary"
                                 htmlType="submit"
                                 size="large"
                                 className="signup-form-button"
-                                data-qa="signup"
                                 disabled={signupStore.isFormInvalid()}
                             >
                                 Sign up
                             </Button>
                             Already registed?{' '}
-                            <Link to={LOGIN_ROUTE} data-qa="login">
+                            <Link to={LOGIN_ROUTE}>
                                 Login now!
                             </Link>
                         </FormItem>

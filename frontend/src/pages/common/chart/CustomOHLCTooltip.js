@@ -14,6 +14,7 @@ class CustomOHLCTooltip extends Component {
         super(props);
         this.renderSVG = this.renderSVG.bind(this);
     }
+
     renderSVG(moreProps) {
         const { displayValuesFor } = this.props;
         const { xDisplayFormat, accessor, volumeFormat, ohlcFormat, percentFormat, displayTexts } = this.props;
@@ -57,8 +58,9 @@ class CustomOHLCTooltip extends Component {
         };
         return this.props.children(this.props, moreProps, itemsToDisplay);
     }
+
     render() {
-        return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={['mousemove']} />;
+        return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={['mousemove']}/>;
     }
 }
 

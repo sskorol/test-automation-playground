@@ -12,6 +12,14 @@ public class SignUpRequest {
     private String name;
 
     @NotBlank
+    @Size(min = 1, max = 2)
+    private String age;
+
+    @NotBlank
+    @Size(min = 4, max = 12)
+    private Double salary;
+
+    @NotBlank
     @Size(min = 3, max = 15)
     private String username;
 

@@ -75,14 +75,3 @@ export function getAllUsers(limit: 50) {
         method: 'GET'
     });
 }
-
-export function getUserProfile(username) {
-    if (!localStorage.getItem(ACCESS_TOKEN)) {
-        return Promise.reject('Unauthorized.');
-    }
-
-    return request({
-        url: API_BASE_URL + '/users/' + username,
-        method: 'GET'
-    });
-}

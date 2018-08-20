@@ -67,6 +67,8 @@ public class AuthController {
 
         val savedUser = userRepository.save(new User(
             signUpRequest.getName(),
+            signUpRequest.getAge(),
+            signUpRequest.getSalary(),
             signUpRequest.getUsername(),
             signUpRequest.getEmail(),
             passwordEncoder.encode(signUpRequest.getPassword()),

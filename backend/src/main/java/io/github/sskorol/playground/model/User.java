@@ -36,6 +36,14 @@ public class User implements UserDetails, Serializable {
     private String name;
 
     @NotBlank
+    @Size(max = 4)
+    private String age;
+
+    @NotBlank
+    @Size(max = 10)
+    private Double salary;
+
+    @NotBlank
     @Size(max = 15)
     private String username;
 
@@ -56,9 +64,11 @@ public class User implements UserDetails, Serializable {
     )
     private Set<Role> roles = new HashSet<>();
 
-    public User(final String name, final String username, final String email, final String password,
+    public User(final String name, final String age, final Double salary, final String username, final String email, final String password,
                 final Set<Role> roles) {
         this.name = name;
+        this.age = age;
+        this.salary = salary;
         this.username = username;
         this.email = email;
         this.password = password;

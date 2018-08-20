@@ -42,6 +42,18 @@ class GridComponent extends React.Component {
                 sortable: true
             },
             {
+                key: 'age',
+                name: 'Age',
+                filterable: true,
+                sortable: true
+            },
+            {
+                key: 'salary',
+                name: 'Salary',
+                filterable: true,
+                sortable: true
+            },
+            {
                 key: 'username',
                 name: 'Username',
                 filterable: true,
@@ -55,8 +67,7 @@ class GridComponent extends React.Component {
             }
         ].map(column => ({
             ...column,
-            headerRenderer: <div data-qa={column.key}>{column.name}</div>,
-            formatter: extendedFormatter(StringFormatter, { 'data-qa': `cell-${column.key}` })
+            formatter: extendedFormatter(StringFormatter)
         }));
     }
 
@@ -153,7 +164,7 @@ class GridComponent extends React.Component {
                 minWidth={1020}
                 emptyRowsView={EmptyGridView}
                 rowRenderer={RowRenderer}
-                toolbar={<Toolbar enableFilter={true} />}
+                toolbar={<Toolbar enableFilter={true}/>}
                 onAddFilter={this.handleFilterChange}
                 onClearFilters={this.onClearFilters}
             />
@@ -163,11 +174,7 @@ class GridComponent extends React.Component {
 
 class EmptyGridView extends React.Component {
     render() {
-        return (
-            <div className="empty-grid" data-qa="empty-grid">
-                No records found
-            </div>
-        );
+        return <div className="empty-grid">No records found</div>;
     }
 }
 
@@ -178,7 +185,7 @@ class RowRenderer extends React.Component {
 
     render() {
         return (
-            <div data-qa="gridRow">
+            <div>
                 <ReactDataGrid.Row ref={node => (this.row = node)} {...this.props} />
             </div>
         );

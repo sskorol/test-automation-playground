@@ -27,8 +27,8 @@ public class UserController {
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public UserSummary getCurrentUser(@CurrentUser User currentUser) {
-        return new UserSummary(currentUser.getId(), currentUser.getName(),
-            currentUser.getUsername(), currentUser.getEmail());
+        return new UserSummary(currentUser.getId(), currentUser.getName(), currentUser.getAge(),
+            currentUser.getSalary(), currentUser.getUsername(), currentUser.getEmail());
     }
 
     @GetMapping("/user/checkUsernameAvailability")
@@ -52,7 +52,8 @@ public class UserController {
     public List<UserSummary> getAllUsers(@RequestParam("limit") long limit) {
         return userRepository.findAll().stream()
             .limit(limit)
-            .map(user -> new UserSummary(user.getId(), user.getName(), user.getUsername(), user.getEmail()))
+            .map(user -> new UserSummary(user.getId(), user.getName(), user.getAge(), user.getSalary(),
+                user.getUsername(), user.getEmail()))
             .collect(toList());
     }
 }

@@ -10,9 +10,11 @@ class CustomHoverTooltip extends Component {
         super(props);
         this.renderSVG = this.renderSVG.bind(this);
     }
+
     render() {
-        return <GenericComponent svgDraw={this.renderSVG} drawOn={['mousemove', 'pan']} />;
+        return <GenericComponent svgDraw={this.renderSVG} drawOn={['mousemove', 'pan']}/>;
     }
+
     renderSVG(moreProps) {
         const pointer = helper(this.props, moreProps);
 
@@ -85,7 +87,7 @@ const Y = 10;
 
 /* eslint-disable react/prop-types */
 function backgroundShapeSVG({ fill, stroke, opacity }, { height, width }) {
-    return <rect height={height} width={width} fill={fill} opacity={opacity} stroke={stroke} />;
+    return <rect height={height} width={width} fill={fill} opacity={opacity} stroke={stroke}/>;
 }
 
 function tooltipSVG({ fontFamily, fontSize, fontFill }, content) {
@@ -117,6 +119,7 @@ function tooltipSVG({ fontFamily, fontSize, fontFill }, content) {
         </text>
     );
 }
+
 /* eslint-enable react/prop-types */
 
 function calculateTooltipSize({ fontFamily, fontSize, fontFill }, content, ctx) {
