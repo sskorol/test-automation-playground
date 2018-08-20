@@ -1,0 +1,16 @@
+.empty-grid {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cell-red {
+    background-color: red !important;
+}
+
+.cell-white {
+    background-color: white !important;
+}

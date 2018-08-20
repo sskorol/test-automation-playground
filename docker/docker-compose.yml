@@ -1,0 +1,62 @@
+version: '3.6'
+
+services:
+  mysql-db:
+    image: "mysql/mysql-server"
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_DATABASE=test
+      - MYSQL_ROOT_HOST=%
+    volumes:
+      - type: bind
+        source: /Users/skorol/Documents/mysql/my.cnf
+        target: /etc/my.cnf
+      - type: bind
+        source: /Users/skorol/Documents/mysql/datadir
+        target: /var/lib/mysql
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    networks:
+      - automation
+  react:
+    image: "sskorol/test-automation-playground"
+    depends_on:
+      - mysql-db
+    ports:
+      - "8090:8090"
+    expose:
+      - "8090"
+    environment:
+      - DATABASE_HOST=mysql-db
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=
+      - DATABASE_NAME=test
+      - DATABASE_PORT=3306
+    networks:
+      - automation
+  selenoid:
+    image: "aerokube/selenoid"
+    depends_on:
+      - react
+    ports:
+      - "4444:4444"
+    volumes:
+      - "/Users/skorol/IdeaProjects/test-automation-playground/docker:/etc/selenoid"
+      - "//var/run/docker.sock:/var/run/docker.sock"
+    command: ["-conf", "/etc/selenoid/browsers.json", "-container-network", "docker_automation"]
+    networks:
+      - automation
+  selenoid-ui:
+    image: "aerokube/selenoid-ui:latest-release"
+    depends_on:
+      - selenoid
+    ports:
+      - "8080:8080"
+    command: ["--selenoid-uri", "http://selenoid:4444"]
+    networks:
+      - automation
+networks:
+  automation:
+    driver: bridge

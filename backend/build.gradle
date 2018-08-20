@@ -1,0 +1,61 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "se.transmode.gradle:gradle-docker:1.2"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.0.3.RELEASE"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'docker'
+apply plugin: 'org.sonarqube'
+
+group = 'io.github.sskorol'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-data-jpa',
+            'org.springframework.boot:spring-boot-starter-security',
+            'io.jsonwebtoken:jjwt:0.9.0',
+            'org.liquibase:liquibase-core',
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.projectlombok:lombok')
+    runtime('mysql:mysql-connector-java')
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "4.8"
+}
+
+bootJar {
+    baseName = 'test-automation-playground'
+    from('../frontend/build') {
+        into 'static'
+    }
+}
+
+bootJar.dependsOn(':frontend:bundle')
+
+task buildDocker(type: Docker) {
+    baseImage = 'openjdk:8u171-jre'
+    maintainer = 'Sergey Korol <serhii.s.korol@gmail.com>'
+    tag = 'sskorol/test-automation-playground'
+    tagVersion = 'latest'
+    addFile("${buildDir}/libs/test-automation-playground-${version}.jar", "test-automation-playground.jar")
+    addFile("${projectDir}/wrapper.sh", "wrapper.sh")
+    runCommand("bash -c 'chmod +x /wrapper.sh'")
+    exposePort(8090)
+    entryPoint(["/bin/bash", "/wrapper.sh"])
+}
+
+buildDocker.dependsOn(build)

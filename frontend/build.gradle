@@ -1,0 +1,28 @@
+plugins {
+    id "com.moowork.node" version "1.2.0"
+}
+
+apply plugin: 'base'
+version '1.0.0'
+
+buildDir = 'build'
+
+node {
+    version = '10.5.0'
+    download = true
+}
+
+task bundle(type: YarnTask) {
+    inputs.dir(new File('src'))
+    inputs.dir(new File('public'))
+    outputs.dir(new File('build'))
+    environment = [ REACT_APP_SERVER_PORT: 8090 ]
+    args = ['run', 'build']
+}
+
+task start(type: YarnTask) {
+    args = ['start']
+}
+
+yarn_install.dependsOn(clean)
+bundle.dependsOn(yarn_install)

@@ -1,0 +1,10 @@
+{
+    "javascript.validate.enable": false,
+    "typescript.validate.enable": false,
+    "flow.enabled": true,
+    "flow.useNPMPackagedFlow": true,
+    "typescript.quickSuggestionsForPaths": false,
+    "eslint.enable": true,
+    "editor.formatOnSave": true,
+    "eslint.packageManager": "yarn"
+}
