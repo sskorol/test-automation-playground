@@ -3,7 +3,7 @@ import './Login.css';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Form, Input, Button, Icon, notification } from 'antd';
-import { CHART_ROUTE } from '../../../constants';
+import { GRID_ROUTE } from '../../../constants';
 
 const FormItem = Form.Item;
 
@@ -32,7 +32,7 @@ class LoginForm extends Component {
     handleResponse() {
         let status = this.props.loginStore.status;
         if (status.code === 200) {
-            this.props.routingStore.push(CHART_ROUTE);
+            this.props.routingStore.push(GRID_ROUTE);
         } else {
             notification.error({
                 message: status.message,

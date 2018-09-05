@@ -21,15 +21,12 @@ export const PASSWORD_MAX_LENGTH = 20;
 export const ROOT_ROUTE = '/';
 export const LOGIN_ROUTE = '/login';
 export const SIGNUP_ROUTE = '/signup';
-export const PROFILE_ROUTE = '/profile';
 export const CHART_ROUTE = '/chart';
 export const GRID_ROUTE = '/grid';
 export const USERS_ROUTE = '/users';
 
-export const PRECISION_TYPE_NUMBER = 'precision_type_number';
-
 export const CHART_UPDATE_INTERVAL = 100;
 export const GRID_UPDATE_INTERVAL = 1000;
 
-export const AUTOUPDATE_CHART = true;
-export const AUTOUPDATE_GRID = true;
+export const AUTOUPDATE_CHART = false;
+export const AUTOUPDATE_GRID = false;

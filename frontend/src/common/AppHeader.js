@@ -27,18 +27,18 @@ class AppHeader extends Component {
         let menuItems;
 
         if (sessionStore.isLoading) {
-            return <LoadingIndicator />;
+            return <LoadingIndicator/>;
         }
 
         if (sessionStore.isAuthorized && sessionStore.userInfo) {
             menuItems = [
                 <Menu.Item key="/">
                     <Link to={ROOT_ROUTE}>
-                        <Icon type="home" className="nav-icon" />
+                        <Icon type="home" className="nav-icon"/>
                     </Link>
                 </Menu.Item>,
                 <Menu.Item key="user" className="profile-menu">
-                    <ProfileDropdownMenu onClick={this.handleMenuClick} userInfo={sessionStore.userInfo} />
+                    <ProfileDropdownMenu onClick={this.handleMenuClick} userInfo={sessionStore.userInfo}/>
                 </Menu.Item>
             ];
         } else {
@@ -79,7 +79,7 @@ function ProfileDropdownMenu(props) {
                 <div className="user-full-name-info">{props.userInfo.name}</div>
                 <div className="username-info">@{props.userInfo.username}</div>
             </Menu.Item>
-            <Menu.Divider />
+            <Menu.Divider/>
             <Menu.Item key="profile" className="dropdown-item">
                 <Link to={`${USERS_ROUTE}/${props.userInfo.username}`}>Profile</Link>
             </Menu.Item>
@@ -102,7 +102,7 @@ function ProfileDropdownMenu(props) {
             getPopupContainer={() => document.getElementsByClassName('profile-menu')[0]}
         >
             <a className="ant-dropdown-link">
-                <Icon type="user" className="nav-icon" style={{ marginRight: 0 }} /> <Icon type="down" />
+                <Icon type="user" className="nav-icon" style={{ marginRight: 0 }}/> <Icon type="down"/>
             </a>
         </Dropdown>
     );

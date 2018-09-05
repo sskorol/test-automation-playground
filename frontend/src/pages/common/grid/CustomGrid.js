@@ -3,9 +3,9 @@ import React from 'react';
 import ReactDataGrid from 'react-data-grid';
 import StringFormatter, { extendedFormatter } from '../../../formatters/StringFormatter';
 import { getAllUsers } from '../../../util/APIUtils';
-import { observer, inject } from 'mobx-react';
-import { action, observable, computed } from 'mobx';
-import { GRID_UPDATE_INTERVAL, AUTOUPDATE_GRID } from '../../../constants';
+import { inject, observer } from 'mobx-react';
+import { action, computed, observable } from 'mobx';
+import { AUTOUPDATE_GRID, GRID_UPDATE_INTERVAL } from '../../../constants';
 
 const {
     Toolbar,
@@ -79,16 +79,13 @@ class GridComponent extends React.Component {
 
     @action
     setRandomData() {
-        const rows = this.rows;
-        if (rows) {
-            const shuffled = rows
+        if (this.rows) {
+            this.setRows(this.rows
                 .map(a => [Math.random(), a])
                 .sort((a, b) => a[0] - b[0])
-                .map(a => a[1]);
-            this.setRows(shuffled);
+                .map(a => a[1]));
         }
-        const updatedColumns = this.columns.slice();
-        this.setColumns(updatedColumns);
+        this.setColumns(this.columns.slice());
     }
 
     @action
@@ -108,13 +105,12 @@ class GridComponent extends React.Component {
 
     @computed
     get getRows() {
-        let result = Selectors.getRows({
+        return Selectors.getRows({
             rows: this.rows,
             filters: this.filters,
             sortColumn: this.sortColumn,
             sortDirection: this.sortDirection
         });
-        return result;
     }
 
     @computed

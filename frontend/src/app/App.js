@@ -52,7 +52,7 @@ class App extends Component {
                     <div className="container">
                         <Switch>
                             <Route exact path={ROOT_ROUTE}>
-                                <Redirect to={CHART_ROUTE} />
+                                <Redirect to={GRID_ROUTE} />
                             </Route>
                             <Route path={LOGIN_ROUTE} component={Login} />
                             <Route path={SIGNUP_ROUTE} component={Signup} />
