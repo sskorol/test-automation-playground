@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 import { signup } from '../../../util/APIUtils';
 import getSessionStore, { SessionStore } from '../../../stores/SessionStore';
+import moment from 'moment';
 
 const SUCCESS = 'success';
 const ERROR = 'error';
@@ -60,8 +61,16 @@ export class SignupStore {
         errorMsg: EMPTY
     };
 
+    @observable
+    date: moment = moment();
+
     constructor() {
         this.sessionStore = getSessionStore();
+    }
+
+    @action
+    setDate(date) {
+        this.date = date;
     }
 
     isFormInvalid = () => {
