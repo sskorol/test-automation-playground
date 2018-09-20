@@ -6,6 +6,7 @@ import { getAllUsers } from '../../../util/APIUtils';
 import { inject, observer } from 'mobx-react';
 import { action, computed, observable } from 'mobx';
 import { AUTOUPDATE_GRID, GRID_UPDATE_INTERVAL } from '../../../constants';
+import NumericFilter from '../../../filters/NumericFilter';
 
 const {
     Toolbar,
@@ -33,7 +34,9 @@ class GridComponent extends React.Component {
             {
                 key: 'id',
                 name: 'ID',
-                sortable: true
+                filterable: true,
+                sortable: true,
+                filterRenderer: NumericFilter
             },
             {
                 key: 'name',
@@ -45,13 +48,15 @@ class GridComponent extends React.Component {
                 key: 'age',
                 name: 'Age',
                 filterable: true,
-                sortable: true
+                sortable: true,
+                filterRenderer: NumericFilter
             },
             {
                 key: 'salary',
                 name: 'Salary',
                 filterable: true,
-                sortable: true
+                sortable: true,
+                filterRenderer: NumericFilter
             },
             {
                 key: 'username',
@@ -67,7 +72,8 @@ class GridComponent extends React.Component {
             }
         ].map(column => ({
             ...column,
-            formatter: extendedFormatter(StringFormatter)
+            headerRenderer: <div data-qa={column.key}>{column.name}</div>,
+            formatter: extendedFormatter(StringFormatter, { 'data-qa': `cell-${column.key}` })
         }));
     }
 

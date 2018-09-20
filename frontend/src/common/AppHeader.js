@@ -37,7 +37,7 @@ class AppHeader extends Component {
                         <Icon type="home" className="nav-icon"/>
                     </Link>
                 </Menu.Item>,
-                <Menu.Item key="user" className="profile-menu">
+                <Menu.Item key="user" className="profile-menu" data-qa="profile-menu">
                     <ProfileDropdownMenu onClick={this.handleMenuClick} userInfo={sessionStore.userInfo}/>
                 </Menu.Item>
             ];
@@ -83,10 +83,10 @@ function ProfileDropdownMenu(props) {
             <Menu.Item key="profile" className="dropdown-item">
                 <Link to={`${USERS_ROUTE}/${props.userInfo.username}`}>Profile</Link>
             </Menu.Item>
-            <Menu.Item key="chart" className="dropdown-item">
+            <Menu.Item key="chart" className="dropdown-item" data-qa="chart">
                 <Link to={CHART_ROUTE}>Chart</Link>
             </Menu.Item>
-            <Menu.Item key="grid" className="dropdown-item">
+            <Menu.Item key="grid" className="dropdown-item" data-qa="grid">
                 <Link to={GRID_ROUTE}>Grid</Link>
             </Menu.Item>
             <Menu.Item key="logout" className="dropdown-item">

@@ -5,7 +5,7 @@ import { sum } from 'd3-array';
 
 import { first, last, isNotDefined, isDefined } from 'react-stockcharts/lib/utils';
 
-class CustomHoverTooltip extends Component {
+export default class CustomHoverTooltip extends Component {
     constructor(props) {
         super(props);
         this.renderSVG = this.renderSVG.bind(this);
@@ -39,7 +39,7 @@ class CustomHoverTooltip extends Component {
                     opacity={bgOpacity}
                 />
                 <g className="react-stockcharts-tooltip-content" transform={`translate(${x}, ${y})`}>
-                    {backgroundShapeSVG(this.props, bgShape)}
+                    {backgroundShapeSVG({ ...this.props, stroke: getStroke(content) }, bgShape)}
                     {tooltipSVG(this.props, content)}
                 </g>
             </g>
@@ -74,6 +74,7 @@ CustomHoverTooltip.defaultProps = {
     bgFill: '#D4E2FD',
     bgOpacity: 0.5,
     stroke: '#9B9BFF',
+    strokeWidth: 3,
     fontFill: '#000000',
     opacity: 0.8,
     backgroundShapeSVG: backgroundShapeSVG,
@@ -86,8 +87,9 @@ const X = 10;
 const Y = 10;
 
 /* eslint-disable react/prop-types */
-function backgroundShapeSVG({ fill, stroke, opacity }, { height, width }) {
-    return <rect height={height} width={width} fill={fill} opacity={opacity} stroke={stroke}/>;
+function backgroundShapeSVG({ fill, opacity, strokeWidth, stroke }, { height, width }) {
+    return <rect height={height} width={width} fill={fill} opacity={opacity} stroke={stroke}
+        strokeWidth={strokeWidth}/>;
 }
 
 function tooltipSVG({ fontFamily, fontSize, fontFill }, content) {
@@ -208,4 +210,7 @@ function helper(props, moreProps, ctx) {
     return { x, y, content, centerX, pointWidth, bgSize };
 }
 
-export default CustomHoverTooltip;
+function getStroke(content) {
+    const values = content.y.filter(y => y.label === 'open' || y.label === 'close').map(y => y.value);
+    return values[0] - values[1] < 0.0 ? '#EE3647' : '#2F76EB';
+}

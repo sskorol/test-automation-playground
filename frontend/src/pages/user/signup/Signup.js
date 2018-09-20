@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
 import './Signup.css';
 import { Link } from 'react-router-dom';
-import { Form, Input, Button, DatePicker, notification } from 'antd';
+import { Form, Input, Button, notification } from 'antd';
 import { observer, inject } from 'mobx-react';
 import { reaction } from 'mobx';
 import { validateName, validateUsername, validateEmail, validatePassword } from '../../../util/ValidationUtils';
 import { checkUsernameAvailability, checkEmailAvailability } from '../../../util/APIUtils';
 import { LOGIN_ROUTE } from '../../../constants';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const FormItem = Form.Item;
 
 @inject('routingStore', 'signupStore')
 @observer
 class Signup extends Component {
-    onChange(date, dateString) {
+    onChange = (date) => {
         // eslint-disable-next-line no-console
-        console.log(date, dateString);
-    }
+        console.log('Generated onChange event:', date.format('YYYY-MM-DD'));
+        this.props.signupStore.setDate(date);
+    };
 
     handleInputChange = (event, validationFun) => {
         const target = event.target;
@@ -32,7 +35,7 @@ class Signup extends Component {
     componentDidMount() {
         this.responseReaction = reaction(
             () => this.props.signupStore.response,
-            response => this.handleReponse(response)
+            response => this.handleResponse(response)
         );
     }
 
@@ -43,7 +46,7 @@ class Signup extends Component {
         this.props.signupStore.clearFieldsState();
     }
 
-    handleReponse(response) {
+    handleResponse(response) {
         const statusDetails = {
             message: response.message,
             description: response.description
@@ -140,7 +143,14 @@ class Signup extends Component {
                             />
                         </FormItem>
                         <FormItem label="Birth date">
-                            <DatePicker onChange={this.onChange()}/>
+                            <DatePicker
+                                customInput={
+                                    <Input size="large" autoComplete="off"/>
+                                }
+                                dateFormat="YYYY-MM-DD"
+                                selected={signupStore.date}
+                                onChange={this.onChange}
+                            />
                         </FormItem>
                         <FormItem>
                             <Button

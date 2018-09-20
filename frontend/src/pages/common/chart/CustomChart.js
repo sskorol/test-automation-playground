@@ -222,7 +222,7 @@ CandleStickChartWithMA.defaultProps = {
 CandleStickChartWithMA = fitWidth(CandleStickChartWithMA);
 
 @observer
-class ChartComponent extends Component {
+export default class ChartComponent extends Component {
     @observable
     data: [];
 
@@ -265,5 +265,3 @@ class ChartComponent extends Component {
         ) : null;
     }
 }
-
-export default ChartComponent;

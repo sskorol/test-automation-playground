@@ -13,7 +13,9 @@ import NotFound from '../common/NotFound';
 import { Layout, notification } from 'antd';
 import { inject, observer } from 'mobx-react';
 import { LOGIN_ROUTE, SIGNUP_ROUTE, GRID_ROUTE, CHART_ROUTE, ROOT_ROUTE } from '../constants';
+import ReactTestUtils from 'react-dom/test-utils';
 
+window.ReactTestUtils = ReactTestUtils;
 const { Content } = Layout;
 
 @inject('sessionStore', 'routingStore')

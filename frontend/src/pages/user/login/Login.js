@@ -62,6 +62,7 @@ class LoginForm extends Component {
                             prefix={<Icon type="user"/>}
                             size="large"
                             name="usernameOrEmail"
+                            data-qa="usernameOrEmail"
                             placeholder="Username or Email"
                         />
                     )}
@@ -74,13 +75,15 @@ class LoginForm extends Component {
                             prefix={<Icon type="lock"/>}
                             size="large"
                             name="password"
+                            data-qa="password"
                             type="password"
                             placeholder="Password"
                         />
                     )}
                 </FormItem>
                 <FormItem>
-                    <Button type="primary" htmlType="submit" size="large" className="login-form-button">
+                    <Button type="primary" htmlType="submit" size="large" className="login-form-button"
+                        data-qa="login-button">
                         Login
                     </Button>
                     Or <Link to="/signup">register now!</Link>
