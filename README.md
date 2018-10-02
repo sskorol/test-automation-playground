@@ -70,7 +70,7 @@ There're 3 modules:
  ./gradlew clean buildDocker
  ```
  
- To start all the containers together (including MySql and [Selenoid](https://github.com/aerokube/selenoid) use **./docker/docker-compose.yml**:
+ To start all the containers together (including MySql and [Selenoid](https://github.com/aerokube/selenoid)) use **./docker/docker-compose.yml**:
  
  ```bash
  docker-compose up -d
