@@ -1,19 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import numeral from 'numeral';
-import { isDouble } from '../util/Commons';
+import { isNumber } from '../util/Commons';
 
-export default function StringFormatter(props) {
+export function floatFormatter(props) {
+    return baseFormatter(props,
+        val => isNumber(val)
+            ? numeral(val).format('0,0.00')
+            : val);
+}
+
+export function cellFormatter(props) {
+    return baseFormatter(props, val => val);
+}
+
+function baseFormatter(props, parseValue) {
     const title = props.titlePrefix + props.value;
     const val = props.value;
     return (
         <span className={props['color']} data-qa={props['data-qa']} title={title}>
-            {isDouble(val) ? numeral(val).format('0,0.00') : val}
+            {parseValue(val)}
         </span>
     );
 }
 
-StringFormatter.propTypes = {
+cellFormatter.propTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     title: PropTypes.string,
     color: PropTypes.string,

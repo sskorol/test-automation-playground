@@ -1,14 +1,18 @@
-export const API_BASE_URL = 'http://localhost:8090/api';
+const HOST = process.env.REACT_APP_SERVER_HOST || 'localhost';
+const PORT = process.env.REACT_APP_SERVER_PORT || 8090;
+export const API_BASE_URL = `http://${HOST}:${PORT}/api`;
 export const ACCESS_TOKEN = 'accessToken';
 
 export const NAME_MIN_LENGTH = 4;
 export const NAME_MAX_LENGTH = 40;
 
-export const AGE_MIN_LENGTH = 1;
-export const AGE_MAX_LENGTH = 3;
+export const SALARY_MIN_LENGTH = 4;
+export const SALARY_MAX_LENGTH = 8;
 
-export const SALARY_MIN_LENGTH = 1;
-export const SALARY_MAX_LENGTH = 3;
+export const SALARY_MIN = 0;
+export const SALARY_MAX = 1000;
+export const SALARY_STEP = 0.01;
+export const SALARY_PRECISION = 2;
 
 export const USERNAME_MIN_LENGTH = 3;
 export const USERNAME_MAX_LENGTH = 15;

@@ -39,8 +39,6 @@ public class User implements UserDetails, Serializable {
     @Size(max = 4)
     private String age;
 
-    @NotBlank
-    @Size(max = 10)
     private Double salary;
 
     @NotBlank

@@ -9,10 +9,10 @@ services:
       - MYSQL_ROOT_HOST=%
     volumes:
       - type: bind
-        source: /Users/skorol/Documents/mysql/my.cnf
+        source: "${MYSQL_FOLDER}/my.cnf"
         target: /etc/my.cnf
       - type: bind
-        source: /Users/skorol/Documents/mysql/datadir
+        source: "${MYSQL_FOLDER}/datadir"
         target: /var/lib/mysql
     ports:
       - "3306:3306"
@@ -43,7 +43,7 @@ services:
     ports:
       - "4444:4444"
     volumes:
-      - "/Users/skorol/IdeaProjects/test-automation-playground/docker:/etc/selenoid"
+      - "${PWD}:/etc/selenoid"
       - "//var/run/docker.sock:/var/run/docker.sock"
     command: ["-conf", "/etc/selenoid/browsers.json", "-container-network", "docker_automation"]
     networks:

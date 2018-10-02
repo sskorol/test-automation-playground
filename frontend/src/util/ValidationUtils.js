@@ -1,8 +1,6 @@
 import {
     NAME_MIN_LENGTH,
     NAME_MAX_LENGTH,
-    AGE_MIN_LENGTH,
-    AGE_MAX_LENGTH,
     SALARY_MIN_LENGTH,
     SALARY_MAX_LENGTH,
     USERNAME_MIN_LENGTH,
@@ -11,8 +9,8 @@ import {
     PASSWORD_MIN_LENGTH,
     PASSWORD_MAX_LENGTH
 } from '../constants';
-import _ from 'lodash';
-import { isDouble } from './Commons';
+import { isNumber } from './Commons';
+import moment from 'moment';
 
 export function validateName(name) {
     if (name.length < NAME_MIN_LENGTH) {
@@ -22,7 +20,7 @@ export function validateName(name) {
         };
     } else if (name.length > NAME_MAX_LENGTH) {
         return {
-            validationStatus: 'error',
+            validateStatus: 'error',
             errorMsg: `Name is too long (Maximum ${NAME_MAX_LENGTH} characters allowed.)`
         };
     }
@@ -33,21 +31,11 @@ export function validateName(name) {
     };
 }
 
-export function validateAge(age) {
-    if (age.length < AGE_MIN_LENGTH) {
+export function validateBirthDate(date) {
+    if (!moment.isMoment(date) || moment.duration(moment().diff(date)).asYears() < 18) {
         return {
             validateStatus: 'error',
-            errorMsg: `Age is too short (Minimum ${AGE_MIN_LENGTH} characters needed.)`
-        };
-    } else if (age.length > AGE_MAX_LENGTH) {
-        return {
-            validationStatus: 'error',
-            errorMsg: `Age is too long (Maximum ${AGE_MAX_LENGTH} characters allowed.)`
-        };
-    } else if (!_.isSafeInteger(age)) {
-        return {
-            validationStatus: 'error',
-            errorMsg: 'Age should be a number.'
+            errorMsg: 'Only 18+ users are allowed to use this application'
         };
     }
 
@@ -58,19 +46,19 @@ export function validateAge(age) {
 }
 
 export function validateSalary(salary) {
-    if (salary.length < SALARY_MIN_LENGTH) {
+    if (!salary || salary.length < SALARY_MIN_LENGTH) {
         return {
             validateStatus: 'error',
             errorMsg: `Salary is too short (Minimum ${SALARY_MIN_LENGTH} characters needed.)`
         };
     } else if (salary.length > SALARY_MAX_LENGTH) {
         return {
-            validationStatus: 'error',
+            validateStatus: 'error',
             errorMsg: `Salary is too long (Maximum ${SALARY_MAX_LENGTH} characters allowed.)`
         };
-    } else if (!isDouble(salary)) {
+    } else if (!isNumber(salary)) {
         return {
-            validationStatus: 'error',
+            validateStatus: 'error',
             errorMsg: 'Salary should be decimal.'
         };
     }
@@ -119,7 +107,7 @@ export function validateUsername(username) {
         };
     } else if (username.length > USERNAME_MAX_LENGTH) {
         return {
-            validationStatus: 'error',
+            validateStatus: 'error',
             errorMsg: `Username is too long (Maximum ${USERNAME_MAX_LENGTH} characters allowed.)`
         };
     }
@@ -138,7 +126,7 @@ export function validatePassword(password) {
         };
     } else if (password.length > PASSWORD_MAX_LENGTH) {
         return {
-            validationStatus: 'error',
+            validateStatus: 'error',
             errorMsg: `Password is too long (Maximum ${PASSWORD_MAX_LENGTH} characters allowed.)`
         };
     }

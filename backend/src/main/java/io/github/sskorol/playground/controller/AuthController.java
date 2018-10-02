@@ -27,6 +27,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 
+import static java.lang.Double.parseDouble;
 import static java.util.Collections.singleton;
 
 @RestController
@@ -68,7 +69,7 @@ public class AuthController {
         val savedUser = userRepository.save(new User(
             signUpRequest.getName(),
             signUpRequest.getAge(),
-            signUpRequest.getSalary(),
+            parseDouble(signUpRequest.getSalary()),
             signUpRequest.getUsername(),
             signUpRequest.getEmail(),
             passwordEncoder.encode(signUpRequest.getPassword()),

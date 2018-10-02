@@ -1,7 +1,7 @@
 import './Grid.css';
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
-import StringFormatter, { extendedFormatter } from '../../../formatters/StringFormatter';
+import { extendedFormatter, cellFormatter, floatFormatter } from '../../../formatters/CellFormatter';
 import { getAllUsers } from '../../../util/APIUtils';
 import { inject, observer } from 'mobx-react';
 import { action, computed, observable } from 'mobx';
@@ -15,7 +15,7 @@ const {
 
 @inject('sessionStore')
 @observer
-class GridComponent extends React.Component {
+export default class GridComponent extends Component {
     @observable
     columns: [];
     @observable
@@ -56,7 +56,8 @@ class GridComponent extends React.Component {
                 name: 'Salary',
                 filterable: true,
                 sortable: true,
-                filterRenderer: NumericFilter
+                filterRenderer: NumericFilter,
+                formatter: extendedFormatter(floatFormatter, { 'data-qa': 'cell-salary' })
             },
             {
                 key: 'username',
@@ -73,7 +74,9 @@ class GridComponent extends React.Component {
         ].map(column => ({
             ...column,
             headerRenderer: <div data-qa={column.key}>{column.name}</div>,
-            formatter: extendedFormatter(StringFormatter, { 'data-qa': `cell-${column.key}` })
+            formatter: !column.formatter
+                ? extendedFormatter(cellFormatter, { 'data-qa': `cell-${column.key}` })
+                : column.formatter
         }));
     }
 
@@ -193,5 +196,3 @@ class RowRenderer extends React.Component {
         );
     }
 }
-
-export default GridComponent;

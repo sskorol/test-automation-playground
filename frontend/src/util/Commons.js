@@ -1,4 +1,9 @@
-export function isDouble(val) {
-    const offset = Math.abs(Math.fround(val) - val);
-    return !isNaN(offset) && offset > 0;
+export function isNumber(value) {
+    if ((undefined === value) || (null === value)) {
+        return false;
+    }
+    if (typeof value === 'number') {
+        return true;
+    }
+    return !isNaN(parseFloat(value)) && !isNaN(value - 0);
 }

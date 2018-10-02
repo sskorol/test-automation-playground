@@ -3,14 +3,14 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="190618134810" author="skorol" runAlways="true">
+    <changeSet id="021018193910" author="skorol" runAlways="true">
         <sqlFile dbms="mysql"
                  path="changesets/0.0.1/schema.sql"
                  relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
-    <changeSet id="190618135310" author="skorol" runAlways="true">
+    <changeSet id="021018193930" author="skorol" runAlways="true">
         <preConditions onFail="CONTINUE">
             <sqlCheck expectedResult="0">select count(*) from roles</sqlCheck>
         </preConditions>

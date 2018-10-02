@@ -1,9 +1,11 @@
 create table if not exists users (
   user_id BIGINT not null AUTO_INCREMENT,
   name VARCHAR(50) not null,
-  email VARCHAR(50) unique not null,
+  age varchar(11) not null,
+	salary double not null,
   username VARCHAR(50) unique not null,
   password VARCHAR(120) not null,
+  email VARCHAR(50) unique not null,
   primary key (user_id)
 ) engine=InnoDB DEFAULT CHARSET=UTF8MB4;
 
