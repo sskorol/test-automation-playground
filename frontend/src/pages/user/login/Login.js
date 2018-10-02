@@ -3,7 +3,7 @@ import './Login.css';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Form, Input, Button, Icon, notification } from 'antd';
-import { CHART_ROUTE } from '../../../constants';
+import { GRID_ROUTE } from '../../../constants';
 
 const FormItem = Form.Item;
 
@@ -14,7 +14,7 @@ class Login extends Component {
             <div className="login-container">
                 <h1 className="page-title">Login</h1>
                 <div className="login-content">
-                    <AntWrappedLoginForm onLogin={this.props.onLogin} />
+                    <AntWrappedLoginForm onLogin={this.props.onLogin}/>
                 </div>
             </div>
         );
@@ -29,10 +29,10 @@ class LoginForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleReponse() {
+    handleResponse() {
         let status = this.props.loginStore.status;
         if (status.code === 200) {
-            this.props.routingStore.push(CHART_ROUTE);
+            this.props.routingStore.push(GRID_ROUTE);
         } else {
             notification.error({
                 message: status.message,
@@ -45,7 +45,7 @@ class LoginForm extends Component {
         event.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                this.props.loginStore.handleSubmit(values).then(() => this.handleReponse());
+                this.props.loginStore.handleSubmit(values).then(() => this.handleResponse());
             }
         });
     }
@@ -59,7 +59,7 @@ class LoginForm extends Component {
                         rules: [{ required: true, message: 'Please type your username or email!' }]
                     })(
                         <Input
-                            prefix={<Icon type="user" />}
+                            prefix={<Icon type="user"/>}
                             size="large"
                             name="usernameOrEmail"
                             data-qa="usernameOrEmail"
@@ -72,7 +72,7 @@ class LoginForm extends Component {
                         rules: [{ required: true, message: 'Please type your password!' }]
                     })(
                         <Input
-                            prefix={<Icon type="lock" />}
+                            prefix={<Icon type="lock"/>}
                             size="large"
                             name="password"
                             data-qa="password"
@@ -82,13 +82,11 @@ class LoginForm extends Component {
                     )}
                 </FormItem>
                 <FormItem>
-                    <Button type="primary" htmlType="submit" size="large" className="login-form-button" data-qa="login">
+                    <Button type="primary" htmlType="submit" size="large" className="login-form-button"
+                        data-qa="login-button">
                         Login
                     </Button>
-                    Or{' '}
-                    <Link to="/signup" data-qa="register">
-                        register now!
-                    </Link>
+                    Or <Link to="/signup">register now!</Link>
                 </FormItem>
             </Form>
         );

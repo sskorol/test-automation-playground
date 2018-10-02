@@ -1,0 +1,45 @@
+plugins {
+    id "java"
+    id "io.qameta.allure" version "2.5"
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    compile('io.github.sskorol:test-data-supplier:1.7.0',
+            'io.qameta.allure:allure-testng:2.7.0',
+            'org.aeonbits.owner:owner-java8:1.0.10',
+            'org.slf4j:slf4j-api:1.8.0-beta2',
+            'org.slf4j:slf4j-simple:1.8.0-beta2',
+            'com.github.ben-manes.caffeine:caffeine:2.6.2',
+            'io.github.sskorol:webdriver-supplier:0.8.0',
+            'org.assertj:assertj-core:3.11.0')
+    compile('com.codeborne:selenide:4.13.0') {
+        exclude group: 'io.github.bonigarcia', module: 'webdrivermanager'
+    }
+}
+
+[compileJava, compileTestJava]*.options*.compilerArgs = ['-parameters']
+
+test {
+    systemProperties System.properties
+    systemProperties['selenide.timeout'] = 8000
+
+    useTestNG() {
+        listeners << 'io.github.sskorol.listeners.BeforeMethodListener'
+        listeners << "io.github.sskorol.util.PageCacheProvider"
+        listeners << "io.github.sskorol.assertions.AssertListener"
+        suites "src/test/resources/smoke-suite-${systemProperties['suite']}.xml"
+    }
+}
+
+allure {
+    autoconfigure = true
+    version = '2.7.0'
+}

@@ -7,6 +7,8 @@ public class UserSummary {
 
     private final Long id;
     private final String name;
+    private final String age;
+    private final Double salary;
     private final String username;
     private final String email;
 }

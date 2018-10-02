@@ -1,6 +1,9 @@
 import { observable, action } from 'mobx';
 import { signup } from '../../../util/APIUtils';
 import getSessionStore, { SessionStore } from '../../../stores/SessionStore';
+import moment from 'moment';
+import numeral from 'numeral';
+import { validateBirthDate } from '../../../util/ValidationUtils';
 
 const SUCCESS = 'success';
 const ERROR = 'error';
@@ -30,16 +33,15 @@ export class SignupStore {
         errorMsg: EMPTY
     };
     @observable
-    age = {
-        value: 18,
+    salary = {
+        value: 0.00,
         validateStatus: EMPTY,
         errorMsg: EMPTY
     };
     @observable
-    salary = {
-        value: 0.0,
-        validateStatus: EMPTY,
-        errorMsg: EMPTY
+    birthDate = {
+        value: moment(),
+        ...validateBirthDate(moment())
     };
     @observable
     username = {
@@ -64,22 +66,20 @@ export class SignupStore {
         this.sessionStore = getSessionStore();
     }
 
-    isFormInvalid = () => {
-        return !(
-            this.name.validateStatus === SUCCESS &&
-            this.age.validateStatus === SUCCESS &&
+    isFormValid = () => {
+        return this.name.validateStatus === SUCCESS &&
+            this.birthDate.validateStatus === SUCCESS &&
             this.salary.validateStatus === SUCCESS &&
             this.username.validateStatus === SUCCESS &&
             this.email.validateStatus === SUCCESS &&
-            this.password.validateStatus === SUCCESS
-        );
+            this.password.validateStatus === SUCCESS;
     };
 
     @action
     clearFieldsState() {
         this.updateFieldState('name', { value: '', validateStatus: '', errorMsg: '' });
-        this.updateFieldState('age', { value: 0, validateStatus: '', errorMsg: '' });
-        this.updateFieldState('salary', { value: 0.0, validateStatus: '', errorMsg: '' });
+        this.updateFieldState('salary', { value: 0.00, validateStatus: '', errorMsg: '' });
+        this.updateFieldState('birthDate', { value: moment(), ...validateBirthDate(moment()) });
         this.updateFieldState('username', { value: '', validateStatus: '', errorMsg: '' });
         this.updateFieldState('email', { value: '', validateStatus: '', errorMsg: '' });
         this.updateFieldState('password', { value: '', validateStatus: '', errorMsg: '' });
@@ -131,15 +131,25 @@ export class SignupStore {
 
     @action
     handleSubmit() {
-        this.sessionStore.setLoadingState(true);
+        if (!this.isFormValid()) {
+            this.setResponse(
+                500,
+                'Client App',
+                'Unable to complete registration request!'
+            );
+            return;
+        }
+
         const signupRequest = {
             name: this.name.value,
-            age: this.age.value,
-            salary: this.salary.value,
+            age: moment().diff(this.birthDate.value, 'years'),
+            salary: numeral(this.salary.value).format('0.00'),
             email: this.email.value,
             username: this.username.value,
             password: this.password.value
         };
+        this.sessionStore.setLoadingState(true);
+
         signup(signupRequest)
             .then(response => {
                 this.setResponse(

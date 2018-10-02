@@ -15,8 +15,8 @@ import { inject, observer } from 'mobx-react';
 import { LOGIN_ROUTE, SIGNUP_ROUTE, GRID_ROUTE, CHART_ROUTE, ROOT_ROUTE } from '../constants';
 import ReactTestUtils from 'react-dom/test-utils';
 
-const { Content } = Layout;
 window.ReactTestUtils = ReactTestUtils;
+const { Content } = Layout;
 
 @inject('sessionStore', 'routingStore')
 @observer
@@ -54,7 +54,7 @@ class App extends Component {
                     <div className="container">
                         <Switch>
                             <Route exact path={ROOT_ROUTE}>
-                                <Redirect to={CHART_ROUTE} />
+                                <Redirect to={GRID_ROUTE} />
                             </Route>
                             <Route path={LOGIN_ROUTE} component={Login} />
                             <Route path={SIGNUP_ROUTE} component={Signup} />

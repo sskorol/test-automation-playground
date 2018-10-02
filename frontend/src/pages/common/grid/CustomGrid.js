@@ -1,11 +1,12 @@
 import './Grid.css';
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
-import StringFormatter, { extendedFormatter } from '../../../formatters/StringFormatter';
+import { extendedFormatter, cellFormatter, floatFormatter } from '../../../formatters/CellFormatter';
 import { getAllUsers } from '../../../util/APIUtils';
-import { observer, inject } from 'mobx-react';
-import { action, observable, computed } from 'mobx';
-import { GRID_UPDATE_INTERVAL, AUTOUPDATE_GRID } from '../../../constants';
+import { inject, observer } from 'mobx-react';
+import { action, computed, observable } from 'mobx';
+import { AUTOUPDATE_GRID, GRID_UPDATE_INTERVAL } from '../../../constants';
+import NumericFilter from '../../../filters/NumericFilter';
 
 const {
     Toolbar,
@@ -14,7 +15,7 @@ const {
 
 @inject('sessionStore')
 @observer
-class GridComponent extends React.Component {
+export default class GridComponent extends Component {
     @observable
     columns: [];
     @observable
@@ -33,13 +34,30 @@ class GridComponent extends React.Component {
             {
                 key: 'id',
                 name: 'ID',
-                sortable: true
+                filterable: true,
+                sortable: true,
+                filterRenderer: NumericFilter
             },
             {
                 key: 'name',
                 name: 'Name',
                 filterable: true,
                 sortable: true
+            },
+            {
+                key: 'age',
+                name: 'Age',
+                filterable: true,
+                sortable: true,
+                filterRenderer: NumericFilter
+            },
+            {
+                key: 'salary',
+                name: 'Salary',
+                filterable: true,
+                sortable: true,
+                filterRenderer: NumericFilter,
+                formatter: extendedFormatter(floatFormatter, { 'data-qa': 'cell-salary' })
             },
             {
                 key: 'username',
@@ -56,7 +74,9 @@ class GridComponent extends React.Component {
         ].map(column => ({
             ...column,
             headerRenderer: <div data-qa={column.key}>{column.name}</div>,
-            formatter: extendedFormatter(StringFormatter, { 'data-qa': `cell-${column.key}` })
+            formatter: !column.formatter
+                ? extendedFormatter(cellFormatter, { 'data-qa': `cell-${column.key}` })
+                : column.formatter
         }));
     }
 
@@ -68,16 +88,13 @@ class GridComponent extends React.Component {
 
     @action
     setRandomData() {
-        const rows = this.rows;
-        if (rows) {
-            const shuffled = rows
+        if (this.rows) {
+            this.setRows(this.rows
                 .map(a => [Math.random(), a])
                 .sort((a, b) => a[0] - b[0])
-                .map(a => a[1]);
-            this.setRows(shuffled);
+                .map(a => a[1]));
         }
-        const updatedColumns = this.columns.slice();
-        this.setColumns(updatedColumns);
+        this.setColumns(this.columns.slice());
     }
 
     @action
@@ -97,13 +114,12 @@ class GridComponent extends React.Component {
 
     @computed
     get getRows() {
-        let result = Selectors.getRows({
+        return Selectors.getRows({
             rows: this.rows,
             filters: this.filters,
             sortColumn: this.sortColumn,
             sortDirection: this.sortDirection
         });
-        return result;
     }
 
     @computed
@@ -153,7 +169,7 @@ class GridComponent extends React.Component {
                 minWidth={1020}
                 emptyRowsView={EmptyGridView}
                 rowRenderer={RowRenderer}
-                toolbar={<Toolbar enableFilter={true} />}
+                toolbar={<Toolbar enableFilter={true}/>}
                 onAddFilter={this.handleFilterChange}
                 onClearFilters={this.onClearFilters}
             />
@@ -163,11 +179,7 @@ class GridComponent extends React.Component {
 
 class EmptyGridView extends React.Component {
     render() {
-        return (
-            <div className="empty-grid" data-qa="empty-grid">
-                No records found
-            </div>
-        );
+        return <div className="empty-grid">No records found</div>;
     }
 }
 
@@ -178,11 +190,9 @@ class RowRenderer extends React.Component {
 
     render() {
         return (
-            <div data-qa="gridRow">
+            <div>
                 <ReactDataGrid.Row ref={node => (this.row = node)} {...this.props} />
             </div>
         );
     }
 }
-
-export default GridComponent;

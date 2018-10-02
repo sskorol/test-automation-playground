@@ -1,6 +1,7 @@
 .gradle
 build/
 gradle/
+.allure
 
 ### IntelliJ IDEA ###
 .idea

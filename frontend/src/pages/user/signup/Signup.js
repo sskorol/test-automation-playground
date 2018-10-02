@@ -1,22 +1,37 @@
 import React, { Component } from 'react';
 import './Signup.css';
 import { Link } from 'react-router-dom';
-import { Form, Input, Button, notification } from 'antd';
+import { Form, Input, Button, notification, InputNumber } from 'antd';
 import { observer, inject } from 'mobx-react';
 import { reaction } from 'mobx';
-import { validateName, validateUsername, validateEmail, validatePassword } from '../../../util/ValidationUtils';
+import {
+    validateName,
+    validateUsername,
+    validateEmail,
+    validatePassword,
+    validateSalary, validateBirthDate
+} from '../../../util/ValidationUtils';
 import { checkUsernameAvailability, checkEmailAvailability } from '../../../util/APIUtils';
-import { LOGIN_ROUTE } from '../../../constants';
+import { LOGIN_ROUTE, SALARY_MAX, SALARY_MIN, SALARY_PRECISION, SALARY_STEP } from '../../../constants';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
+import DatePicker from 'react-datepicker';
 
 const FormItem = Form.Item;
 
 @inject('routingStore', 'signupStore')
 @observer
-class Signup extends Component {
+export default class Signup extends Component {
+
     handleInputChange = (event, validationFun) => {
         const target = event.target;
         const inputName = target.name;
         const inputValue = target.value;
+
+        if (moment.isMoment(inputValue)) {
+            // eslint-disable-next-line no-console
+            console.log('Generated onChange event:', inputValue.format('YYYY-MM-DD'));
+        }
 
         this.props.signupStore[inputName] = {
             value: inputValue,
@@ -27,7 +42,7 @@ class Signup extends Component {
     componentDidMount() {
         this.responseReaction = reaction(
             () => this.props.signupStore.response,
-            response => this.handleReponse(response)
+            response => this.handleResponse(response)
         );
     }
 
@@ -38,7 +53,7 @@ class Signup extends Component {
         this.props.signupStore.clearFieldsState();
     }
 
-    handleReponse(response) {
+    handleResponse(response) {
         const statusDetails = {
             message: response.message,
             description: response.description
@@ -80,7 +95,6 @@ class Signup extends Component {
                             <Input
                                 size="large"
                                 name="name"
-                                data-qa="full-name"
                                 autoComplete="off"
                                 placeholder="Type full name"
                                 value={signupStore.name.value}
@@ -96,7 +110,6 @@ class Signup extends Component {
                             <Input
                                 size="large"
                                 name="username"
-                                data-qa="username"
                                 autoComplete="off"
                                 placeholder="Type unique username"
                                 value={signupStore.username.value}
@@ -113,7 +126,6 @@ class Signup extends Component {
                             <Input
                                 size="large"
                                 name="email"
-                                data-qa="email"
                                 type="email"
                                 autoComplete="off"
                                 placeholder="Type unique email"
@@ -130,7 +142,6 @@ class Signup extends Component {
                             <Input
                                 size="large"
                                 name="password"
-                                data-qa="password"
                                 type="password"
                                 autoComplete="off"
                                 placeholder="Type password"
@@ -138,19 +149,62 @@ class Signup extends Component {
                                 onChange={event => this.handleInputChange(event, validatePassword)}
                             />
                         </FormItem>
+                        <FormItem
+                            label="Birth date"
+                            validateStatus={signupStore.birthDate.validateStatus}
+                            help={signupStore.birthDate.errorMsg}
+                        >
+                            <DatePicker
+                                customInput={
+                                    <Input size="large"/>
+                                }
+                                selected={signupStore.birthDate.value}
+                                dateFormat="YYYY-MM-DD"
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onChange={date => this.handleInputChange({
+                                    target: {
+                                        name: 'birthDate',
+                                        value: date
+                                    }
+                                }, validateBirthDate)}
+                            />
+                        </FormItem>
+                        <FormItem
+                            label="Salary"
+                            validateStatus={signupStore.salary.validateStatus}
+                            help={signupStore.salary.errorMsg}
+                        >
+                            <InputNumber
+                                size="large"
+                                min={SALARY_MIN}
+                                max={SALARY_MAX}
+                                step={SALARY_STEP}
+                                precision={SALARY_PRECISION}
+                                value={signupStore.salary.value}
+                                name="salary"
+                                autoComplete="off"
+                                style={{ width: '100%' }}
+                                onChange={value => this.handleInputChange({
+                                    target: {
+                                        name: 'salary',
+                                        value: value
+                                    }
+                                }, validateSalary)}/>
+                        </FormItem>
                         <FormItem>
                             <Button
                                 type="primary"
                                 htmlType="submit"
                                 size="large"
                                 className="signup-form-button"
-                                data-qa="signup"
-                                disabled={signupStore.isFormInvalid()}
+                                disabled={!signupStore.isFormValid()}
                             >
                                 Sign up
                             </Button>
                             Already registed?{' '}
-                            <Link to={LOGIN_ROUTE} data-qa="login">
+                            <Link to={LOGIN_ROUTE}>
                                 Login now!
                             </Link>
                         </FormItem>
@@ -160,5 +214,3 @@ class Signup extends Component {
         );
     }
 }
-
-export default Signup;

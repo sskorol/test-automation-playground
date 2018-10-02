@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Smoke suite">
+    <test name="Chrome group">
+        <parameter name="browserName" value="chrome"/>
+        <parameter name="platformName" value="LINUX"/>
+        <classes>
+            <class name="io.github.sskorol.testcases.ChartTests"/>
+            <class name="io.github.sskorol.testcases.GridTests"/>
+        </classes>
+    </test>
+</suite>

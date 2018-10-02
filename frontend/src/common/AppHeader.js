@@ -27,31 +27,27 @@ class AppHeader extends Component {
         let menuItems;
 
         if (sessionStore.isLoading) {
-            return <LoadingIndicator />;
+            return <LoadingIndicator/>;
         }
 
         if (sessionStore.isAuthorized && sessionStore.userInfo) {
             menuItems = [
                 <Menu.Item key="/">
-                    <Link to={ROOT_ROUTE} data-qa="menu-home">
-                        <Icon type="home" className="nav-icon" />
+                    <Link to={ROOT_ROUTE}>
+                        <Icon type="home" className="nav-icon"/>
                     </Link>
                 </Menu.Item>,
-                <Menu.Item key="user" className="profile-menu">
-                    <ProfileDropdownMenu onClick={this.handleMenuClick} userInfo={sessionStore.userInfo} />
+                <Menu.Item key="user" className="profile-menu" data-qa="profile-menu">
+                    <ProfileDropdownMenu onClick={this.handleMenuClick} userInfo={sessionStore.userInfo}/>
                 </Menu.Item>
             ];
         } else {
             menuItems = [
                 <Menu.Item key="login">
-                    <Link to={LOGIN_ROUTE} data-qa="menu-login">
-                        Login
-                    </Link>
+                    <Link to={LOGIN_ROUTE}>Login</Link>
                 </Menu.Item>,
                 <Menu.Item key="signup">
-                    <Link to={SIGNUP_ROUTE} data-qa="menu-signup">
-                        Signup
-                    </Link>
+                    <Link to={SIGNUP_ROUTE}>Signup</Link>
                 </Menu.Item>
             ];
         }
@@ -60,9 +56,7 @@ class AppHeader extends Component {
             <Header className="app-header">
                 <div className="container">
                     <div className="app-title">
-                        <Link to={ROOT_ROUTE} data-qa="home">
-                            Test Automation Playground
-                        </Link>
+                        <Link to={ROOT_ROUTE}>Test Automation Playground</Link>
                     </div>
                     <Menu
                         className="app-menu"
@@ -82,30 +76,20 @@ function ProfileDropdownMenu(props) {
     const dropdownMenu = (
         <Menu onClick={props.onClick} className="profile-dropdown-menu">
             <Menu.Item key="user-info" className="dropdown-item" disabled>
-                <div className="user-full-name-info" data-qa="full-name">
-                    {props.userInfo.name}
-                </div>
-                <div className="username-info" data-qa="username">
-                    @{props.userInfo.username}
-                </div>
+                <div className="user-full-name-info">{props.userInfo.name}</div>
+                <div className="username-info">@{props.userInfo.username}</div>
             </Menu.Item>
-            <Menu.Divider />
+            <Menu.Divider/>
             <Menu.Item key="profile" className="dropdown-item">
-                <Link to={`${USERS_ROUTE}/${props.userInfo.username}`} data-qa="menu-profile">
-                    Profile
-                </Link>
+                <Link to={`${USERS_ROUTE}/${props.userInfo.username}`}>Profile</Link>
             </Menu.Item>
-            <Menu.Item key="chart" className="dropdown-item">
-                <Link to={CHART_ROUTE} data-qa="menu-chart">
-                    Chart
-                </Link>
+            <Menu.Item key="chart" className="dropdown-item" data-qa="chart">
+                <Link to={CHART_ROUTE}>Chart</Link>
             </Menu.Item>
-            <Menu.Item key="grid" className="dropdown-item">
-                <Link to={GRID_ROUTE} data-qa="menu-grid">
-                    Grid
-                </Link>
+            <Menu.Item key="grid" className="dropdown-item" data-qa="grid">
+                <Link to={GRID_ROUTE}>Grid</Link>
             </Menu.Item>
-            <Menu.Item key="logout" className="dropdown-item" data-qa="menu-logout">
+            <Menu.Item key="logout" className="dropdown-item">
                 Logout
             </Menu.Item>
         </Menu>
@@ -118,8 +102,7 @@ function ProfileDropdownMenu(props) {
             getPopupContainer={() => document.getElementsByClassName('profile-menu')[0]}
         >
             <a className="ant-dropdown-link">
-                <Icon type="user" className="nav-icon" style={{ marginRight: 0 }} data-qa="menu-user" />{' '}
-                <Icon type="down" />
+                <Icon type="user" className="nav-icon" style={{ marginRight: 0 }}/> <Icon type="down"/>
             </a>
         </Dropdown>
     );
